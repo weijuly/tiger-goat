@@ -1,0 +1,103 @@
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Hello World</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://unpkg.com/react@16/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6.15.0/babel.min.js"></script>
+</head>
+
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        ReactDOM.render(
+        <h1>Hello World</h1>, document.getElementById('root') )
+    </script>
+    <div class="container">
+        <div class="row">
+            <div class="col-4">
+                some content
+            </div>
+            <div class="col-8">
+                <svg width="700" height="700">
+                    <script>
+                    <![CDATA[
+                        var matrix = [];
+                        var x = 0;
+                        var y = 0;
+                        var element = 0;
+
+                        var grab = function(event) {
+                            element = event.target;
+                            x = event.clientX;
+                            y = event.clientY;
+                            matrix = element.getAttributeNS(null, 'transform').slice(7,-1).split(' ');
+                            for(var i = 0; i < matrix.length; i++) {
+                                matrix[i] = parseFloat(matrix[i]);
+                            }
+                            element.setAttributeNS(null, 'onmousemove', 'move(event)');
+                            element.setAttributeNS(null, 'onmouseup', 'drop(event)');
+                        };
+                        var move = function(event) {
+                            matrix[4] += (event.clientX - x);
+                            matrix[5] += (event.clientY - y);
+                            element.setAttributeNS(null, 'transform', 'matrix(' + matrix.join(' ') + ')');
+                            x = event.clientX;
+                            y = event.clientY;
+                        };
+                        var drop = function(event) {
+                            if(element) {
+                                element.removeAttributeNS(null, 'onmousemove');
+                                element.removeAttributeNS(null, 'onmouseup');
+                            }
+                            element = 0;
+                            alert('dropped @ ' + event.clientX + ' ' + event.clientY );
+
+                            var aqua = document.getElementById('A');
+                            alert('pos' + aqua.getBoundingClientRect().x);
+                        };
+
+                        var recursive = function(){
+                            return recursive;
+                        }
+                        var absolute = function(element,svg) {
+
+                        };
+
+                    ]]>
+                    </script>
+
+                    <line x1="0" y1="0" x2="700" y2="0" style="stroke:rgb(1,0,0);stroke-width:2" id="P"/>
+                    <line x1="0" y1="0" x2="0" y2="700" style="stroke:rgb(1,0,0);stroke-width:2" id="Q"/>
+                    <line x1="0" y1="700" x2="700" y2="700" style="stroke:rgb(1,0,0);stroke-width:2" id="R"/>
+                    <line x1="700" y1="700" x2="700" y2="0" style="stroke:rgb(1,0,0);stroke-width:2" id="S"/>
+
+                    <line x1="50" y1="250" x2="650" y2="250" style="stroke:rgb(0,0,0);stroke-width:2" id="A"/>
+                    <line x1="50" y1="350" x2="650" y2="350" style="stroke:rgb(0,0,0);stroke-width:2" id="B"/>
+                    <line x1="50" y1="450" x2="650" y2="450" style="stroke:rgb(0,0,0);stroke-width:2" id="C"/>
+
+                    <line x1="50" y1="250" x2="50" y2="450" style="stroke:rgb(0,0,0);stroke-width:2" id="D"/>
+                    <line x1="650" y1="250" x2="650" y2="450" style="stroke:rgb(0,0,0);stroke-width:2" id="E"/>
+
+                    <line x1="350" y1="50" x2="50" y2="600" style="stroke:rgb(0,0,0);stroke-width:2"  id="F"/>
+                    <line x1="350" y1="50" x2="250" y2="600" style="stroke:rgb(0,0,0);stroke-width:2"  id="G"/>
+                    <line x1="350" y1="50" x2="450" y2="600" style="stroke:rgb(0,0,0);stroke-width:2" id="H"/>
+                    <line x1="350" y1="50" x2="650" y2="600" style="stroke:rgb(0,0,0);stroke-width:2" id="I"/>
+
+                    <line x1="50" y1="600" x2="650" y2="600" style="stroke:rgb(0,0,0);stroke-width:2" id="J"/>
+
+                    <image id="goat" href="goat.png" x="100" y="0" width="64px" height="64px" transform="matrix(1 0 0 1 0 0)" onmousedown="grab(event)"/>
+                    <image href="tiger.png" x="250" y="0" width="64px" height="64px" transform="matrix(1 0 0 1 0 0)" onmousedown="grab(event)"/>
+
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <a href="https://www.flaticon.com/free-icon/tiger_141796">Tiger</a>
+    <img src="goat.png" />
+</body>
+
+</html>
