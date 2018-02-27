@@ -21,13 +21,53 @@
                 some content
             </div>
             <div class="col-8">
-                <svg width="700" height="700">
+                <svg width="700" height="700" onload="init()">
                     <script>
                     <![CDATA[
                         var matrix = [];
                         var x = 0;
                         var y = 0;
                         var element = 0;
+                        var offset = {
+                            x: 0,
+                            y: 0
+                        };
+                        var grid = {
+                            IA1: { x: 350, y: 50},
+                            IB1: { x: 50, y: 250},
+                            IB2: { x: 240, y: 250},
+                            IB3: { x: 315, y: 250},
+                            IB4: { x: 390, y: 250},
+                            IB5: { x: 460, y: 250},
+                            IB6: { x: 650, y: 250},
+                            IC1: { x: 50, y: 350},
+                            IC2: { x: 190, y: 350},
+                            IC3: { x: 300, y: 350},
+                            IC4: { x: 405, y: 350},
+                            IC5: { x: 520, y: 350},
+                            IC6: { x: 650, y: 350},
+                            ID1: { x: 50, y: 450},
+                            ID2: { x: 130, y: 450},
+                            ID3: { x: 280, y: 450},
+                            ID4: { x: 420, y: 450},
+                            ID5: { x: 570, y: 450},
+                            ID6: { x: 650, y: 450},
+                            IE1: { x: 50, y: 600},
+                            IE2: { x: 250, y: 600},
+                            IE3: { x: 450, y: 600},
+                            IE4: { x: 650, y: 600}
+                        };
+
+                        var calculate_distance = function(p,q) {
+                            return Math.sqrt(Math.pow(p.x - q.x, 2) + Math.pow(p.y - q.y, 2));
+                        }
+
+                        var init = function(){
+                            var line = document.getElementById('A').getBoundingClientRect();
+                            offset.x = line.left - 50;
+                            offset.y = line.top - 250;
+                            console.log('offset:', offset);
+                        };
 
                         var grab = function(event) {
                             element = event.target;
@@ -48,23 +88,31 @@
                             y = event.clientY;
                         };
                         var drop = function(event) {
-                            if(element) {
-                                element.removeAttributeNS(null, 'onmousemove');
-                                element.removeAttributeNS(null, 'onmouseup');
+                            if(!element){
+                                return;
                             }
+                            var curr_pos = {
+                                x: event.clientX - offset.x,
+                                y: event.clientY - offset.y
+                            };
+                            console.log('dropped @', curr_pos);
+                            var nearest = find_nearest(curr_pos);
+                            console.log('nearest', nearest);
+                            element.removeAttributeNS(null, 'onmousemove');
+                            element.removeAttributeNS(null, 'onmouseup');
                             element = 0;
-                            alert('dropped @ ' + event.clientX + ' ' + event.clientY );
-
-                            var aqua = document.getElementById('A');
-                            alert('pos' + aqua.getBoundingClientRect().x);
                         };
-
-                        var recursive = function(){
-                            return recursive;
+                        var find_nearest = function(point) {
+                            var distances = [];
+                            for(var k in grid) {
+                                distances.push([k, calculate_distance(point, grid[k])]);
+                            }
+                            distances.sort(function(x, y){
+                                return x[1] - y[1];
+                            });
+                            console.log('distances', distances);
+                            return distances[0][0];
                         }
-                        var absolute = function(element,svg) {
-
-                        };
 
                     ]]>
                     </script>
@@ -89,7 +137,7 @@
                     <line x1="50" y1="600" x2="650" y2="600" style="stroke:rgb(0,0,0);stroke-width:2" id="J"/>
 
                     <image id="goat" href="goat.png" x="100" y="0" width="64px" height="64px" transform="matrix(1 0 0 1 0 0)" onmousedown="grab(event)"/>
-                    <image href="tiger.png" x="250" y="0" width="64px" height="64px" transform="matrix(1 0 0 1 0 0)" onmousedown="grab(event)"/>
+                    <image href="tiger.png" x="318" y="18" width="64px" height="64px" transform="matrix(1 0 0 1 0 0)" onmousedown="grab(event)"/>
 
                 </svg>
             </div>
