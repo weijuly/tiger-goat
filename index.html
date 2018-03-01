@@ -98,6 +98,9 @@
                             console.log('dropped @', curr_pos);
                             var nearest = find_nearest(curr_pos);
                             console.log('nearest', nearest);
+                            var difference = find_difference(curr_pos, grid[nearest]);
+                            console.log('difference', difference);
+                            snap_to_nearest(element,difference);
                             element.removeAttributeNS(null, 'onmousemove');
                             element.removeAttributeNS(null, 'onmouseup');
                             element = 0;
@@ -112,6 +115,18 @@
                             });
                             console.log('distances', distances);
                             return distances[0][0];
+                        };
+                        var find_difference = function(a,b) {
+                            return {
+                                x: a.x - b.x,
+                                y: a.y - b.y
+                            };
+                        };
+                        var snap_to_nearest = function(element, difference) {
+                            matrix[4] += difference.x;
+                            matrix[5] += difference.y;
+                            console.log('snapping to', matrix);
+                            element.setAttributeNS(null, 'transform', 'matrix(' + matrix.join(' ') + ')');
                         }
 
                     ]]>
